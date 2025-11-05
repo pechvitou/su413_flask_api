@@ -1,0 +1,180 @@
+{% extends "template.html" %}
+
+{% block title %}Viti's Store - Catalog{% endblock %}
+
+{% block rightHeader %}
+    <link rel="stylesheet" href="/static/home.css">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Slider -->
+    <section class="vs-slider">
+        <div class="vs-slides">
+            <div class="vs-slide vs-active">
+                <img src="/static/slides/Banner 1.jpg" alt="Slide 1">
+            </div>
+            <div class="vs-slide">
+                <img src="/static/slides/Banner 2.jpg" alt="Slide 2">
+            </div>
+            <div class="vs-slide">
+                <img src="/static/slides/Banner 3.jpg" alt="Slide 3">
+            </div>
+            <div class="vs-slide">
+                <img src="/static/slides/Banner 4.jpg" alt="Slide 4">
+            </div>
+            <div class="vs-slide">
+                <img src="/static/slides/Banner 5.jpg" alt="Slide 5">
+            </div>
+        </div>
+
+        <!-- Navigation buttons -->
+        <button class="vs-prev">&#10094;</button>
+        <button class="vs-next">&#10095;</button>
+    </section>
+
+    <!-- Product Cards -->
+    <section class="vs-products">
+        <div class="vs-container">
+            <h2>Clothing Products</h2>
+            <div class="vs-product-grid">
+                {% for product in products %}
+                    <div class="vs-product-card">
+                        <div class="vs-product-card-title">
+                            <h3>{{ product.name }}</h3>
+                        </div>
+                        <div class="vs-product-img-wrapper">
+                            <a href="{{ url_for('product', product_id=product.id) }}">
+                                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                            </a>
+                        </div>
+
+                        <div class="vs-bottom-card">
+                            <p class="vs-price">${{ product.price }}</p>
+
+                            <div class="vs-actions">
+                                <a class="vs-cart" href="#"
+                                   data-id="{{ product.id }}"
+                                   data-name="{{ product.name }}"
+                                   data-price="{{ product.price }}"
+                                   data-image="{{ product.image_url }}">
+                                    Add to Cart
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="vs-footer">
+        <div class="vs-footer-container">
+            <p>&copy; 2025 Viti's Store. All rights reserved.</p>
+            <div class="vs-social-links">
+                <a href="#" aria-label="Facebook">Facebook</a>
+                <a href="#" aria-label="Instagram">Instagram</a>
+                <a href="#" aria-label="Twitter">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="vs-toast" class="vs-toast"></div>
+
+    <!-- Slider Script -->
+    <script>
+        const slides = document.querySelectorAll(".vs-slide");
+        const prevBtn = document.querySelector(".vs-prev");
+        const nextBtn = document.querySelector(".vs-next");
+
+        let index = 0;
+
+        function showSlide(i) {
+            slides.forEach((slide, idx) => {
+                slide.classList.toggle("vs-active", idx === i);
+            });
+        }
+
+        function nextSlide() {
+            index = (index + 1) % slides.length;
+            showSlide(index);
+        }
+
+        function prevSlide() {
+            index = (index - 1 + slides.length) % slides.length;
+            showSlide(index);
+        }
+
+        nextBtn.addEventListener("click", nextSlide);
+        prevBtn.addEventListener("click", prevSlide);
+
+        // Auto slide every 5s
+        setInterval(nextSlide, 5000);
+    </script>
+
+    <script>
+
+        // Function to get total cart count
+        function updateCartCount() {
+            const carts = JSON.parse(localStorage.getItem('carts')) || [];
+            const totalCount = carts.length;
+            const countElement = document.getElementById('cart-count');
+            if (countElement) {
+                countElement.textContent = totalCount;
+            }
+        }
+
+        // Call on page load
+        updateCartCount();
+
+        window.addEventListener('storage', updateCartCount);
+
+        function showToast(message) {
+            const toast = document.getElementById("vs-toast");
+            toast.textContent = message;
+            toast.classList.add("show");
+
+            // Hide after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
+
+        const cartButtons = document.querySelectorAll(".vs-cart");
+
+        cartButtons.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                const product = {
+                    id: parseInt(btn.dataset.id),
+                    name: btn.dataset.name,
+                    price: parseFloat(btn.dataset.price),
+                    image: btn.dataset.image,
+                    quantity: 1 // default quantity
+                };
+
+                // Get existing carts
+                let carts = JSON.parse(localStorage.getItem("carts")) || [];
+
+                // Check if product already exists
+                const existingProduct = carts.find(p => p.id === product.id);
+                if (existingProduct) {
+                    existingProduct.quantity += 1; // increment quantity
+                } else {
+                    carts.push(product);
+                }
+
+                // Save back to localStorage
+                localStorage.setItem("carts", JSON.stringify(carts));
+
+                updateCartCount();
+
+                showToast(`${product.name} added to cart!`);
+            });
+        });
+    </script>
+
+{% endblock %}

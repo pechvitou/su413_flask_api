@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/template.css">
+    {% block rightHeader %}{% endblock %}
+</head>
+<body>
+<header class="appbar">
+    <h1 class="logo" onclick="window.location.href='/'">
+        Viti's Store
+    </h1>
+    <div>
+        {#        <a href="/" class="home-navigation">Home</a>#}
+    </div>
+    <button class="to-cart-btn" onclick="window.location.href='/cart'">
+        Cart (<span id="cart-count">0</span>)
+    </button>
+</header>
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script>
+    function updateCartCount() {
+        const cartItems = JSON.parse(localStorage.getItem('carts')) || [];
+        const count = cartItems.length; // counts each item once
+        const countElement = document.getElementById('cart-count');
+        if (countElement) {
+            countElement.textContent = count;
+        }
+    }
+
+    // Call on page load
+    updateCartCount();
+
+    // Re-run on history navigation (back/forward buttons)
+    window.addEventListener('popstate', updateCartCount);
+
+    // Re-run if using hash navigation
+    window.addEventListener('hashchange', updateCartCount);
+</script>
+</body>
+</html>

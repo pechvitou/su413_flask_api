@@ -1,0 +1,111 @@
+{% extends "template.html" %}
+
+{% block title %}{{ product.name }} - Boak's Store{% endblock %}
+
+{% block rightHeader %}
+    <link rel="stylesheet" href="/static/product.css">
+{% endblock %}
+
+{% block content %}
+    <div class="product-detail-container">
+        <!-- Back Button -->
+        <a href="/" class="back-btn">&larr; Back to Home</a>
+
+        <!-- Product Image -->
+        <div class="product-image">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <p class="description">{{ product.description }}</p>
+            <p class="price">${{ product.price }}</p>
+
+            <!-- Quantity Selector -->
+            <div class="quantity-selector">
+                <button id="minusBtn">-</button>
+                <input type="number" id="quantityInput" value="1" min="1">
+                <button id="plusBtn">+</button>
+            </div>
+
+            <!-- Add to Cart Button -->
+            <div class="actions">
+                <a href="#" class="cart-btn"
+                   data-id="{{ product.id }}"
+                   data-name="{{ product.name }}"
+                   data-price="{{ product.price }}"
+                   data-image="{{ product.image_url }}"
+                   id="addToCartBtn">
+                    Add to Cart
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+
+        // Function to get total cart count
+        function updateCartCount() {
+            const carts = JSON.parse(localStorage.getItem('carts')) || [];
+            const totalCount = carts.length; // count each item once
+            const countElement = document.getElementById('cart-count');
+            if (countElement) {
+                countElement.textContent = totalCount;
+            }
+        }
+
+        // Call on page load
+        updateCartCount();
+
+        // Quantity selector
+        const minusBtn = document.getElementById("minusBtn");
+        const plusBtn = document.getElementById("plusBtn");
+        const quantityInput = document.getElementById("quantityInput");
+
+        minusBtn.addEventListener("click", () => {
+            let val = parseInt(quantityInput.value);
+            if (val > 1) quantityInput.value = val - 1;
+        });
+        plusBtn.addEventListener("click", () => {
+            let val = parseInt(quantityInput.value);
+            quantityInput.value = val + 1;
+        });
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
+        // Add to Cart
+        const addToCartBtn = document.getElementById("addToCartBtn");
+        addToCartBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const product = {
+                id: parseInt(addToCartBtn.dataset.id),
+                name: addToCartBtn.dataset.name,
+                price: parseFloat(addToCartBtn.dataset.price),
+                image: addToCartBtn.dataset.image,
+                quantity: parseInt(quantityInput.value)
+            };
+            let carts = JSON.parse(localStorage.getItem("carts")) || [];
+            const existingProduct = carts.find(p => p.id === product.id);
+            if (existingProduct) {
+                existingProduct.quantity += product.quantity;
+            } else {
+                carts.push(product);
+            }
+            localStorage.setItem("carts", JSON.stringify(carts));
+            updateCartCount();
+            showToast(`${product.quantity} x ${product.name} added to cart!`);
+        });
+    </script>
+{% endblock %}

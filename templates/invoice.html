@@ -1,0 +1,56 @@
+<!-- templates/invoice.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <link rel="stylesheet" href="/static/invoice.css">
+</head>
+<body>
+<div class="invoice-container">
+    <h2>Invoice</h2>
+    <div class="customer-info">
+        <p><strong>Customer:</strong> {{ name }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Phone:</strong> {{ phone }}</p>
+        <p><strong>Address:</strong> {{ address }}</p>
+    </div>
+
+    <table class="invoice-table">
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td align="center">{{ item.quantity }}</td>
+                <td align="right">${{ "%.2f"|format(item.price) }}</td>
+                <td align="right">${{ "%.2f"|format(item.price * item.quantity) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3" class="right bold">Total USD:</td>
+            <td class="bold">${{ "%.2f"|format(total_usd) }}</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="right bold">Total Riel:</td>
+            <td class="bold">KHR{{ "{:,.0f}".format(total_riel) }}</td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <!-- Back to Shopping Button -->
+    <div class="back-btn-container">
+        <a href="/" class="back-btn">← Back to Shopping</a>
+    </div>
+</div>
+</body>
+</html>

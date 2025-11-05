@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404 Page Not Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='error.css') }}">
+</head>
+<body>
+    <div class="error-container">
+        <img src="{{ url_for('static', filename='svg/page-not-found.svg') }}" alt="Page Not Found" class="error-image">
+        <div class="error-message">Oops! Page Not Found</div>
+        <p class="error-desc">The page you’re looking for might have been removed, renamed or is temporarily unavailable.</p>
+        <a href="/" class="error-btn">Go Back Home</a>
+    </div>
+</body>
+</html>
