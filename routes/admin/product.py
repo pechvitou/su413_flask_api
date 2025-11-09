@@ -174,19 +174,22 @@ def product_delete(product_id):
     if not p:
         return jsonify({"error": "Product not found"}), 404
 
+    # store info first
+    product_data = {
+        "id": p.id,
+        "name": p.name,
+        "category_id": p.category_id,
+        "cost": float(p.cost),
+        "price": float(p.price),
+        "image": p.image,
+        "stock": float(p.stock),
+        "description": p.description
+    }
+
     db.session.delete(p)
     db.session.commit()
 
     return jsonify({
         "message": "Product deleted successfully",
-        "product": {
-            "id": p.id,
-            "name": p.name,
-            "category_id": p.category_id,
-            "cost": float(p.cost),
-            "price": float(p.price),
-            "image": p.image,
-            "stock": float(p.stock),
-            "description": p.description
-        }
+        "product": product_data
     }), 200

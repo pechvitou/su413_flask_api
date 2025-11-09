@@ -106,4 +106,4 @@ with app.app_context():
                 db.session.add(order_item)
 
     db.session.commit()
-    print("✅ Seeding complete with users, customers, categories, products, orders & order_items!")
+    print("Seeding complete with users, customers, categories, products, orders & order_items!")

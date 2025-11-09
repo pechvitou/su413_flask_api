@@ -10,5 +10,5 @@ class Product(db.Model):
     description = db.Column(db.String(128))
 
     # Relationships
-    cart_items = db.relationship('CustomerCart', backref='product', lazy=True)
-    order_items = db.relationship('OrderItem', backref='product', lazy=True)
+    cart_items = db.relationship('CustomerCart', backref='product', lazy=True, cascade="all, delete-orphan")
+    order_items = db.relationship('OrderItem', backref='product', lazy=True, cascade="all, delete-orphan")
