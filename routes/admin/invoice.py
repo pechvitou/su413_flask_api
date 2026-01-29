@@ -1,9 +1,12 @@
+from flask_jwt_extended import jwt_required
+
 from app import app, db
 from model import Order, OrderItem, Customer, Product, User
 from flask import request, jsonify
 from datetime import datetime
 
 @app.get('/invoice/list')
+@jwt_required()
 def invoice_list():
     try:
         orders = Order.query.all()
@@ -35,6 +38,7 @@ def invoice_list():
 
 
 @app.get('/invoice/<int:invoice_id>')
+@jwt_required()
 def invoice_get(invoice_id):
     o = Order.query.get(invoice_id)
     if not o:
@@ -63,6 +67,7 @@ def invoice_get(invoice_id):
 
 
 @app.post('/invoice/create')
+@jwt_required()
 def invoice_create():
     try:
         data = request.get_json()
@@ -151,6 +156,7 @@ def invoice_create():
 
 
 @app.put('/invoice/update/<int:invoice_id>')
+@jwt_required()
 def invoice_update(invoice_id):
     try:
         o = Order.query.get(invoice_id)
@@ -236,6 +242,7 @@ def invoice_update(invoice_id):
 
 
 @app.delete('/invoice/delete/<int:invoice_id>')
+@jwt_required()
 def invoice_delete(invoice_id):
     o = Order.query.get(invoice_id)
     if not o:

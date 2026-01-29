@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/static/template.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/template.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/appbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/footer.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
     {% block rightHeader %}{% endblock %}
 </head>
 <body>
-<header class="appbar">
-    <h1 class="logo" onclick="window.location.href='/'">
-        Viti's Store
-    </h1>
-    <div>
-        {#        <a href="/" class="home-navigation">Home</a>#}
-    </div>
-    <button class="to-cart-btn" onclick="window.location.href='/cart'">
-        Cart (<span id="cart-count">0</span>)
-    </button>
-</header>
+{% include 'partials/appbar.html' %}
 <div class="container">
     {% block content %}
     {% endblock %}
+
+    <button id="scrollTopBtn" title="Go to top">
+        <svg width="20" height="20">
+            <use href="/static/svg/sprite.svg#icon-arrow-up"></use>
+        </svg>
+    </button>
 </div>
 
 <script>
@@ -30,18 +31,40 @@
         const count = cartItems.length; // counts each item once
         const countElement = document.getElementById('cart-count');
         if (countElement) {
-            countElement.textContent = count;
+            if (count === 0) {
+                countElement.style.display = 'none'; // hide if 0
+            } else {
+                countElement.style.display = 'inline-block'; // show if >0
+                countElement.textContent = count;
+            }
         }
     }
-
-    // Call on page load
-    updateCartCount();
 
     // Re-run on history navigation (back/forward buttons)
     window.addEventListener('popstate', updateCartCount);
 
     // Re-run if using hash navigation
     window.addEventListener('hashchange', updateCartCount);
+</script>
+
+<script>
+    const scrollBtn = document.getElementById("scrollTopBtn");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            scrollBtn.classList.add("visible");
+        } else {
+            scrollBtn.classList.remove("visible");
+        }
+    };
+
+
+    // Scroll to top when button clicked
+    scrollBtn.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
 </script>
 </body>
 </html>

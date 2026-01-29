@@ -3,119 +3,112 @@
 {% block title %}Boak's Store - Checkout{% endblock %}
 
 {% block rightHeader %}
-<link rel="stylesheet" href="/static/checkout.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/checkout.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="checkout-container">
+    <div class="checkout-container">
+        <div class="checkout-sub-container">
+            <!-- Left: Order Summary -->
+            <div class="checkout-summary">
+                <h2>
+                    <img width="30" height="30" src="/static/svg/receipt.svg"/>Order Summary</h2>
+                <div id="orderSummary" class="order-summary-list"></div>
+                <hr style="border: 1px solid #ddd; width: 100%">
+                <p class="total">Total USD: $<span id="totalUSD">0.00</span></p>
 
-    <!-- Left: Order Summary -->
-    <div class="checkout-summary">
-        <h2>Order Summary</h2>
-        <div id="orderSummary" class="order-summary-list"></div>
-        <hr style="border: 1px solid #ddd; width: 100%">
-        <p>Total USD: $<span id="totalUSD">0.00</span></p>
-        <hr style="border: 1px solid #ddd; width: 100%">
-        <p>Total Riel: KHR<span id="totalRiel">0</span></p>
+                <p class="total">Total Riel: KHR<span id="totalRiel">0</span></p>
+            </div>
+
+            <!-- Right: User Info Form -->
+            <div class="checkout-form">
+                <h2>Shipping Information</h2>
+                <form id="userForm" method="POST" action="{{ url_for('checkout') }}">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+
+                    <label for="address">Shipping Address</label>
+                    <textarea id="address" name="address" rows="4" required></textarea>
+
+                    <button type="submit" class="proceed-btn">Proceed</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <!-- Right: User Info Form -->
-    <div class="checkout-form">
-        <h2>Shipping Information</h2>
-        <form id="userForm" method="POST" action="{{ url_for('checkout') }}">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
+            let carts = JSON.parse(localStorage.getItem('carts')) || [];
+            const totalUSDSpan = document.getElementById('totalUSD');
+            const totalRielSpan = document.getElementById('totalRiel');
+            const EXCHANGE_RATE = 4000;
 
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" required>
+            function renderOrderSummary() {
+                const orderSummaryList = document.getElementById('orderSummary');
+                orderSummaryList.innerHTML = '';
+                let totalUSD = 0;
 
-            <label for="address">Shipping Address</label>
-            <textarea id="address" name="address" rows="4" required></textarea>
+                if (carts.length === 0) {
+                    orderSummaryList.innerHTML = '<p style="text-align:center; color:#555;">Your cart is empty</p>';
+                    totalUSDSpan.textContent = '0.00';
+                    totalRielSpan.textContent = '0';
+                    return;
+                }
 
-            <button type="submit" class="proceed-btn">Proceed</button>
-        </form>
-    </div>
+                carts.forEach(item => {
+                    totalUSD += item.price * item.quantity;
+                    const summaryItem = document.createElement('div');
+                    summaryItem.className = 'summary-item';
+                    summaryItem.innerHTML = `
+          <span>${item.name} x${item.quantity}</span>
+          <span>$${(item.price * item.quantity).toFixed(2)}</span>
+        `;
+                    orderSummaryList.appendChild(summaryItem);
+                });
 
-</div>
+                totalUSDSpan.textContent = totalUSD.toFixed(2);
+                totalRielSpan.textContent = Math.round(totalUSD * EXCHANGE_RATE);
+            }
 
-<script>
-let carts = JSON.parse(localStorage.getItem('carts')) || [];
-const totalUSDSpan = document.getElementById('totalUSD');
-const totalRielSpan = document.getElementById('totalRiel');
-const EXCHANGE_RATE = 4000;
+            renderOrderSummary();
 
-function renderOrderSummary() {
-    const orderSummaryList = document.getElementById('orderSummary');
-    orderSummaryList.innerHTML = '';
-    let totalUSD = 0;
+            document.getElementById('userForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
 
-    if (carts.length === 0) {
-        orderSummaryList.innerHTML = '<p style="text-align:center; color:#555;">Your cart is empty</p>';
-        totalUSDSpan.textContent = '0.00';
-        totalRielSpan.textContent = '0';
-        return;
-    }
+                const proceedBtn = this.querySelector('.proceed-btn');
+                proceedBtn.disabled = true;
+                proceedBtn.textContent = 'Processing...';
 
-    carts.forEach(item => {
-        totalUSD += item.price * item.quantity;
-        const summaryItem = document.createElement('div');
-        summaryItem.className = 'summary-item';
-        summaryItem.innerHTML = `<span>${item.name} x${item.quantity}</span><span>$${(item.price * item.quantity).toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        })}</span>`;
-        orderSummaryList.appendChild(summaryItem);
-    });
+                const formData = new FormData(this);
+                formData.append('cart', JSON.stringify(carts));
 
-    totalUSDSpan.textContent = totalUSD.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    totalRielSpan.textContent = Math.round(totalUSD * EXCHANGE_RATE).toLocaleString('en-US');
-}
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData
+                    });
 
-renderOrderSummary();
-
-// AJAX form submission
-document.getElementById('userForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const proceedBtn = this.querySelector('.proceed-btn');
-    if (proceedBtn.disabled) return;
-
-    proceedBtn.disabled = true;
-    proceedBtn.style.cursor = 'not-allowed';
-    proceedBtn.textContent = 'Processing...';
-
-    const formData = new FormData(this);
-    // Send cart as JSON string
-    formData.append('cart', JSON.stringify(carts));
-
-    try {
-        const response = await fetch(this.action, {
-            method: 'POST',
-            body: formData
+                    if (response.ok) {
+                        localStorage.removeItem('carts');
+                        window.location.href = '/invoice';
+                    } else {
+                        proceedBtn.disabled = false;
+                        proceedBtn.textContent = 'Proceed';
+                    }
+                } catch (err) {
+                    console.error(err);
+                    proceedBtn.disabled = false;
+                    proceedBtn.textContent = 'Proceed';
+                }
+            });
+            // Updted
         });
-
-        if (response.ok) {
-            localStorage.removeItem('carts');
-            window.location.href = '/invoice';
-        } else {
-            alert('Failed to submit order.');
-            proceedBtn.disabled = false;
-            proceedBtn.style.cursor = 'pointer';
-            proceedBtn.textContent = 'Proceed';
-        }
-    } catch (err) {
-        console.error(err);
-        alert('Error submitting order.');
-        proceedBtn.disabled = false;
-        proceedBtn.style.cursor = 'pointer';
-        proceedBtn.textContent = 'Proceed';
-    }
-});
-</script>
+    </script>
 {% endblock %}

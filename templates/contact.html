@@ -1,0 +1,157 @@
+{% extends "template.html" %}
+
+{% block title %}Viti's Electronics - Contact{% endblock %}
+
+{% block rightHeader %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="contact-main-container">
+        <div class="text-container">
+            <div class="heading">
+                <p>
+                    <span class="highlight">We Would Love to Hear from You</span>
+                </p>
+            </div>
+
+            <div class="content">
+                <div class="thank-you">
+                    Thank you for reaching out! Your message has been successfully sent.
+                    Our team at Viti's Electronics will review it and get back to you within 24 hours.
+                    Meanwhile, feel free to browse our latest gadgets and deals below.
+                    We appreciate your interest and support — happy shopping!
+                </div>
+                <div class="social-logos">
+                    <a href="https://facebook.com" target="_blank">
+                        <img src="/static/svg/facebook.svg" alt="Facebook">
+                    </a>
+                    <a href="https://twitter.com" target="_blank">
+                        <img src="/static/svg/x.svg" alt="Twitter">
+                    </a>
+                    <a href="https://instagram.com" target="_blank">
+                        <img src="/static/svg/instagram.svg" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="information-container">
+            <div class="information">
+                <div class="info-container">
+                    <p class="info-header">Address</p>
+                    <p class="into-context">Somewhere in the world</p>
+                </div>
+                <div class="info-navigator-wrapper">
+                    <div class="info-navigator">
+                        <svg width="30" height="30">
+                            <use href="/static/svg/sprite.svg#icon-arrow-top-right-v2"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="information">
+                <div class="info-container">
+                    <p class="info-header">You can email here</p>
+                    <p class="into-context">penpechvitou@gmail.com</p>
+                </div>
+                <div class="info-navigator-wrapper">
+                    <div class="info-navigator">
+                        <svg width="30" height="30">
+                            <use href="/static/svg/sprite.svg#icon-arrow-top-right-v2"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="information">
+                <div class="info-container">
+                    <p class="info-header">Call us on</p>
+                    <p class="into-context">+855 12345678</p>
+                </div>
+                <div class="info-navigator-wrapper">
+                    <div class="info-navigator">
+                        <svg width="30" height="30">
+                            <use href="/static/svg/sprite.svg#icon-arrow-top-right-v2"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="information">
+                <div class="info-container">
+                    <p class="info-header">Working Hours</p>
+                    <p class="into-context">10:00 am - 6:00 pm</p>
+                </div>
+                <div class="info-navigator-wrapper">
+                    <div class="info-navigator">
+                        <svg width="30" height="30">
+                            <use href="/static/svg/sprite.svg#icon-arrow-top-right-v2"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="form-contact-image-wrapper">
+                <div class="form-contact-image">
+                    <img src="/static/stock_images/contact%20us%20stock%20image v2.jpg"/>
+                </div>
+
+                <div class="information">
+                    <div class="info-container">
+                        <p class="info-header">Partnerships and Collaborations</p>
+                        <p class="into-context">penpechvitou@gmail.com</p>
+                    </div>
+                    <div class="info-navigator-wrapper">
+                        <div class="info-navigator">
+                            <svg width="30" height="30">
+                                <use href="/static/svg/sprite.svg#icon-arrow-top-right-v2"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form">
+                <form class="contact-form" method="POST" action="/contact-success">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="first_name" placeholder="Enter First Name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="last_name" placeholder="Enter Last Name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Enter your Email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" name="phone" placeholder="Enter Phone Number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Message</label>
+                        <textarea name="message" rows="5" placeholder="Enter your message" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <img width="25" height="25" src="/static/svg/send.svg"/>
+                        <span>Send Your Message</span>
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    {% include 'partials/footer.html' %}
+{% endblock %}

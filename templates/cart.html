@@ -3,28 +3,39 @@
 {% block title %}Boak's Store - Cart{% endblock %}
 
 {% block rightHeader %}
-    <link rel="stylesheet" href="/static/cart.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/cart.css') }}">
 {% endblock %}
 
 {% block content %}
-    <div class="cart-container">
-        <div class="cart-items-container">
-            <h1>Your Shopping Cart</h1>
-            <div id="cartItems" class="cart-items"></div>
+    <div class="cart-wrapper">
+
+        <h1 class="cart-title">
+            <svg width="30" height="30">
+                <use href="/static/svg/sprite.svg#icon-cart-v2"></use>
+            </svg>
+            <span>Your Shopping Cart</span>
+        </h1>
+
+        <div class="cart-main">
+            <!-- Cart Items Column -->
+            <div class="cart-items-container">
+                <div id="cartItems" class="cart-items"></div>
+            </div>
+
+            <!-- Order Summary Column -->
+            <aside class="cart-summary">
+                <h2>
+                    <img width="30" height="30" src="/static/svg/receipt.svg"/>
+                    Order Summary
+                </h2>
+                <div id="orderSummary" class="order-summary-list"></div>
+                <hr>
+                <p class="total">Total USD: $<span id="totalUSD">0.00</span></p>
+                <p class="total">Total Riel: KHR<span id="totalRiel">0</span></p>
+                <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+            </aside>
         </div>
 
-        <div class="cart-summary">
-            <h2>Order Summary</h2>
-            {#            <hr style="border: 1px solid #ddd; width: 100%">#}
-            <div id="orderSummary" class="order-summary-list"></div>
-            <hr style="border: 1px solid #ddd; width: 100%">
-            <p>Total USD: $<span id="totalUSD">0.00</span></p>
-            <hr style="border: 1px solid #ddd; width: 100%">
-            <p>Total Riel: KHR<span id="totalRiel">0</span></p>
-            <hr style="border: 1px solid #ddd; width: 100%">
-
-            <a href="/checkout" class="checkout-btn">Checkout</a>
-        </div>
     </div>
 
     <script>
@@ -40,19 +51,15 @@
             let totalUSD = 0;
 
             if (carts.length === 0) {
-                cartItemsContainer.innerHTML = '<p style="text-align:center; font-size:1.2rem; color:#555;">Your cart is empty</p>';
-                document.querySelector('.order-summary-list')?.remove(); // remove summary list if exists
+                cartItemsContainer.innerHTML = '<p class="empty-cart">Your cart is empty</p>';
+                document.querySelector('.order-summary-list')?.remove();
                 totalUSDSpan.textContent = '0.00';
                 totalRielSpan.textContent = '0';
                 checkoutBtn.disabled = true;
-                {#checkoutBtn.style.opacity = 0.6;#}
-                checkoutBtn.style.cursor = 'not-allowed';
                 checkoutBtn.classList.add('disabled');
                 return;
             } else {
                 checkoutBtn.disabled = false;
-                checkoutBtn.style.opacity = 1;
-                checkoutBtn.style.cursor = 'pointer';
                 checkoutBtn.classList.remove('disabled');
             }
 
@@ -64,34 +71,39 @@
                 cartItem.innerHTML = `
             <img src="${item.image}" alt="${item.name}">
             <div class="item-info">
-                <h3>${item.name}</h3>
-                <p class="price">$${item.price.toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })}</p>
-                <div class="quantity-and-remove">
-                    <div class="quantity-controls">
-                        <button class="minus-btn" data-index="${index}">-</button>
-                        <input type="number" value="${item.quantity}" min="1" data-index="${index}">
-                        <button class="plus-btn" data-index="${index}">+</button>
+                <div class="item">
+                    <div class="item-info-header">
+                        <h3>${item.name}</h3>
+                        <p class="price">$${item.price.toFixed(2)}</p>
                     </div>
-                    <button class="remove-btn" data-index="${index}">Remove</button>
+                    <div class="row-container">
+                        <h3>${item.description}</h3>
+                        <div class="quantity-controls">
+                            <button class="minus-btn" data-index="${index}">-</button>
+                            <input type="number" value="${item.quantity}" min="1" data-index="${index}">
+                            <button class="plus-btn" data-index="${index}">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="quantity-and-remove">
+                    <button class="remove-btn" data-index="${index}">
+                        <svg width="22" height="22" >
+                            <use href="/static/svg/sprite.svg#icon-delete-outline"></use>
+                        </svg>
+                    </button>
                 </div>
             </div>
         `;
                 cartItemsContainer.appendChild(cartItem);
             });
 
-            // Render order summary items
+            // Order summary
             const orderSummaryList = document.createElement('div');
             orderSummaryList.className = 'order-summary-list';
             carts.forEach(item => {
                 const summaryItem = document.createElement('div');
                 summaryItem.className = 'summary-item';
-                summaryItem.innerHTML = `<span>${item.name} x${item.quantity}</span><span>$${(item.price * item.quantity).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })}</span>`;
+                summaryItem.innerHTML = `<span>${item.name} x${item.quantity}</span><span>$${(item.price * item.quantity).toFixed(2)}</span>`;
                 orderSummaryList.appendChild(summaryItem);
             });
 
@@ -102,25 +114,39 @@
             const firstHr = cartSummary.querySelector('hr');
             cartSummary.insertBefore(orderSummaryList, firstHr);
 
-
-            totalUSDSpan.textContent = totalUSD.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+            totalUSDSpan.textContent = totalUSD.toFixed(2);
             totalRielSpan.textContent = Math.round(totalUSD * EXCHANGE_RATE).toLocaleString('en-US');
-
         }
 
-        // Quantity and remove logic
+        // Quantity and remove
         cartItemsContainer.addEventListener('click', (e) => {
-            const index = e.target.dataset.index;
-            if (e.target.classList.contains('minus-btn') && carts[index].quantity > 1) carts[index].quantity--;
-            if (e.target.classList.contains('plus-btn')) carts[index].quantity++;
-            if (e.target.classList.contains('remove-btn')) carts.splice(index, 1);
+            const btn = e.target.closest('button');
+            if (!btn) return;
+
+            const index = btn.dataset.index;
+            if (index === undefined) return;
+
+            if (btn.classList.contains('minus-btn')) {
+                if (carts[index].quantity > 1) {
+                    carts[index].quantity--;
+                } else {
+                    // quantity is 1 → remove item
+                    carts.splice(index, 1);
+                }
+            }
+
+            if (btn.classList.contains('plus-btn')) {
+                carts[index].quantity++;
+            }
+            if (btn.classList.contains('remove-btn')) {
+                carts.splice(index, 1);
+            }
+
             localStorage.setItem('carts', JSON.stringify(carts));
             updateCartCount();
             renderCart();
         });
+
 
         cartItemsContainer.addEventListener('change', (e) => {
             if (e.target.tagName === 'INPUT') {
@@ -133,19 +159,15 @@
             }
         });
 
-        // Function to get total cart count
+        // Update cart count
         function updateCartCount() {
             const carts = JSON.parse(localStorage.getItem('carts')) || [];
-            const totalCount = carts.length; // count each item once
+            const totalCount = carts.length;
             const countElement = document.getElementById('cart-count');
-            if (countElement) {
-                countElement.textContent = totalCount;
-            }
+            if (countElement) countElement.textContent = totalCount;
         }
 
-        // Call on page load
         updateCartCount();
-
         renderCart();
     </script>
 

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Login</title>
+    <!-- Link to static CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+<body>
+<div class="login-main-container">
+    <div class="context-container">
+        <div class="text-container fade-drop-in delay-200">
+            <div class="text">
+                <p class="text-s">Leading Electronics Store</p>
+                <h2>POWERED BY</h2>
+                <h2 id="yellow">INNOVATION</h2>
+                <h2>FOR EVERY HOME.</h2>
+            </div>
+            <div class="signup-navigator">
+                <p>Don't have account?</p>
+                <a href="signup">Create account</a>
+            </div>
+        </div>
+        <div class="context-image-container fade-slide-up delay-200">
+            <img width="500px" height="auto" src="/static/stock_images/abstract%20landscape.jpg"/>
+            <p class="absolute-text">Hello! I’m Vitou, founder of Viti's Electronics, bringing you the best electronic
+                devices with top-notch quality and service.</p>
+            <p class="absolute-logo" onclick="window.location.href='/'">Viti's Store</p>
+        </div>
+    </div>
+    <div class="login-container fade-drop-in delay-300">
+        <p class="absolute-logo-login delay-500">Viti's Store</p>
+        <div class="login-card fade-slide-up delay-500">
+            <h2>Login to your account</h2>
+
+            <form id="loginForm">
+
+                <!-- Username -->
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username"
+                           autocomplete="off">
+                </div>
+
+                <!-- Password -->
+                <div class="input-group password-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" placeholder="Enter your password">
+                        {#                        <svg width="20" height="20" class="lock-icon">#}
+                        {#                            <use href="{{ url_for('static', filename='svg/sprite.svg') }}#icon-lock"></use>#}
+                        {#                        </svg>#}
+                    </div>
+                </div>
+
+                <!-- Login button -->
+                <button type="submit" class="login-btn">Login</button>
+
+            </form>
+        </div>
+
+    </div>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            // Get and trim values
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (!username || !password) {
+                return;
+            }
+
+            const data = {username, password};
+
+            try {
+                const res = await fetch("/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+
+                if (res.ok) {
+                    window.location.href = "/dashboard";
+                } else {
+                    alert(result.error || "Login failed");
+                }
+            } catch (error) {
+                alert("Network error");
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

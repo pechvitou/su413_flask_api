@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <title>Admin</title>
+</head>
+<body>
+<div class="main-container-home">
+    <!-- Appbar -->
+    <div class="appbar">
+        <div class="appbar-logo">
+            <div class="logo" onclick=window.location.href="/">Viti's Store</div>
+        </div>
+        <div class="appbar-options">
+            <div class="sign-out-button" id="sign-out-btn">
+                <img width="25" height="25" src="/static/svg/sign-out.svg"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="profile-container">
+        <div class="profile-icon">
+            <img width="200" height="200" src="/static/svg/user-profile-icon.svg"/>
+        </div>
+        <div class="profile-name">
+            <h2 id="greeting">Good Morning, <b>Pen Pichvitou</b></h2>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation-container">
+        <div class="navigation" id="home-nav">
+            <div class="navigation-button">
+                <img src="/static/svg/home.svg" width="70" height="70"/>
+            </div>
+            <div class="navigation-title">
+                <p>Home</p>
+            </div>
+        </div>
+        <div class="navigation" id="dashboard-nav">
+            <div class="navigation-button">
+                <img src="/static/svg/dashboard.svg" width="70" height="70"/>
+            </div>
+            <div class="navigation-title">
+                <p>Dashboard</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const signOutBtn = document.getElementById('sign-out-btn');
+
+    signOutBtn.addEventListener('click', async () => {
+        try {
+            const response = await fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    {#'X-CSRFToken': '{{ csrf_token() }}'#}
+                }
+            });
+
+            if (response.ok) {
+                // Redirect to homepage or login page after logout
+                window.location.href = '/';
+            } else {
+                console.error('Logout failed');
+                alert('Failed to logout. Try again.');
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    });
+</script>
+
+
+<script>
+    // Navigation to home
+    const homeNav = document.getElementById('home-nav');
+    homeNav.addEventListener('click', () => {
+        window.location.href = '/';
+    });
+
+    // Navigation to dashboard
+    const dashboardNav = document.getElementById('dashboard-nav');
+    dashboardNav.addEventListener('click', () => {
+        window.location.href = '/dashboard';
+    });
+
+    // Greeting based on time
+    function updateGreeting() {
+        const hours = new Date().getHours();
+        let greeting = "Good evening";
+        if (hours < 12) greeting = "Good morning";
+        else if (hours < 18) greeting = "Good afternoon";
+        document.getElementById('greeting').innerHTML = `${greeting}, <b>Pen Pichvitou</b>`;
+    }
+
+    updateGreeting();
+</script>
+</body>
+</html>

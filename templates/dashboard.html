@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>Dashboard</title>
+</head>
+<body>
+{% if not user %}
+    <script>
+        window.location.href = "/";
+    </script>
+{% endif %}
+
+{% if user %}
+    <div class="dashboard-container">
+        <h1>Welcome, {{ user.username }}!</h1>
+        {#        <p><strong>Email:</strong> {{ user.email }}</p>#}
+        <p><strong>Last Login:</strong> {{ user.last_login or "N/A" }}</p>
+
+        <div class="profile-section">
+            <label for="profile-upload">
+                <img src="{{ user.profile_image or url_for('static', filename='svg/user-profile-icon.svg') }}"
+                     alt="Profile Avatar" class="profile-avatar" id="previewImg">
+            </label>
+            <input type="file" id="profile-upload" accept="image/*">
+        </div>
+
+        <div class="button-container">
+            <button class="logout-button" onclick=window.location.href="/">Home</button>
+            <form action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">File too large! Max size 1MB.</div>
+
+    <script>
+        const fileInput = document.getElementById('profile-upload');
+        const avatar = document.getElementById('previewImg');
+        const toast = document.getElementById('toast');
+        const allowedTypes = ["image/jpeg", "image/png", "image/svg+xml"];
+
+
+        function showToast(message) {
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) {
+                previewImg.src = "/static/svg/user-profile-icon.svg";
+                return;
+            }
+
+            if (!allowedTypes.includes(file.type)) {
+                showToast("Invalid file type! Only JPG, PNG, or SVG allowed.");
+                fileInput.value = "";
+                previewImg.src = "/static/svg/user-profile-icon.svg";
+                return;
+            }
+
+            if (file.size > 1024 * 1024) { // 1MB limit
+                showToast("File too large! Max size 1MB.");
+                fileInput.value = '';
+                previewImg.src = "/static/svg/user-profile-icon.svg";
+                return;
+            }
+
+            // Preview selected image immediately
+            const reader = new FileReader();
+            reader.onload = () => {
+                avatar.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('profile', file);
+
+            try {
+                const response = await fetch('/update-profile', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    avatar.src = result.profile; // update avatar from DB
+                    showToast("Profile updated successfully!");
+                } else {
+                    showToast(result.message || "Failed to update profile.");
+                }
+            } catch (error) {
+                console.error(error);
+                showToast("An error occurred while updating profile.");
+            }
+        });
+    </script>
+
+{% endif %}
+</body>
+</html>

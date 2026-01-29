@@ -120,7 +120,10 @@ def checkout():
         address = request.form.get('address')
 
         cart_json = request.form.get('cart')
-        cart = json.loads(cart_json) if cart_json else []
+        try:
+            cart = json.loads(cart_json) if cart_json else []
+        except Exception:
+            cart = []
 
         total_usd = sum(item['price'] * item['quantity'] for item in cart)
         total_riel = total_usd * EXCHANGE_RATE

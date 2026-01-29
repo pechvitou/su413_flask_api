@@ -1,0 +1,274 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.signup-main-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    background: #f3f3f3;
+}
+
+.context-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 40px;
+    flex: 1;
+    opacity: 0;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+}
+
+.text h2#yellow {
+    color: goldenrod;
+}
+
+.text-s {
+    text-transform: uppercase;
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.78);
+    font-family: "Cutoff Pro";
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.text h2 {
+    font-size: 2.75rem;
+    color: rgba(0, 0, 0, 0.8);
+    font-family: "Cutoff Pro";
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.signup-navigator {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.signup-navigator p {
+    font-family: "Cutoff Pro";
+
+}
+
+.signup-navigator a {
+    font-family: "Cutoff Pro";
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.context-image-container {
+    opacity: 0;
+    position: relative;
+}
+
+.absolute-text {
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+    width: 50%;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.absolute-logo {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'ROOSTER';
+    cursor: pointer;
+}
+
+.context-image-container img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 50px;
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/static/stock_images/abstract bg.jpg') no-repeat center center;
+    background-size: cover; /* makes image fill container */
+    height: 100%;
+    width: 100%;
+    border-radius: 50px;
+    flex: 1;
+    position: relative;
+    opacity: 0;
+}
+
+.absolute-logo-signup {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: 'ROOSTER', sans-serif;
+
+    display: none;
+    opacity: 0;
+    animation: dropIn 1s forwards;
+}
+
+@keyframes dropIn {
+    0% {
+        transform: translateX(-50%) translateY(-20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+.signup-card {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 30px 30px;
+    width: 40%;
+    opacity: 0;
+}
+
+/* Heading */
+.signup-card h2 {
+    margin-bottom: 30px;
+    font-size: 1.25rem;
+    color: #111;
+    text-align: center;
+}
+
+/* Input group */
+.input-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label */
+.input-group label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Input fields */
+.input-group input {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    padding: 10px 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-bottom-color: #000;
+}
+
+/* Password wrapper for icon */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+}
+
+.lock-icon {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.lock-icon svg {
+    fill: black;
+}
+
+/* signup button */
+.signup-btn {
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.signup-btn:hover {
+    background: #333;
+}
+
+@media (max-width: 1600px) {
+    .signup-card {
+        width: 70%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .context-container {
+        display: none;
+    }
+
+    .absolute-logo-signup {
+        display: block;
+    }
+}
+
+@media (max-width: 500px) {
+    .signup-card {
+        width: 90% !important;
+        padding: 30px 20px;
+    }
+
+    .signup-main-container {
+        padding: 20px;
+    }
+}

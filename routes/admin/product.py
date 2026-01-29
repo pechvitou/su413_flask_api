@@ -1,3 +1,5 @@
+from flask_jwt_extended import jwt_required
+
 from app import app, db
 from model import Product
 from flask import request, jsonify
@@ -7,6 +9,7 @@ from werkzeug.utils import secure_filename
 UPLOAD_FOLDER = 'static/product_images'
 
 @app.get('/product/list')
+@jwt_required()
 def product_list():
     products = Product.query.all()
     result = [
@@ -25,6 +28,7 @@ def product_list():
     return jsonify(result), 200
 
 @app.get('/api/product/<int:product_id>/', strict_slashes=False)
+@jwt_required()
 def product_get(product_id):
     p = Product.query.get(product_id)
     if not p:
@@ -41,6 +45,7 @@ def product_get(product_id):
     }), 200
 
 @app.post('/product/create')
+@jwt_required()
 def product_create():
     data = request.form
     files = request.files
@@ -110,6 +115,7 @@ def product_create():
 
 # --------------------- UPDATE ---------------------
 @app.put('/product/update/<int:product_id>')
+@jwt_required()
 def product_update(product_id):
     p = Product.query.get(product_id)
     if not p:
@@ -169,6 +175,7 @@ def product_update(product_id):
 
 
 @app.delete('/product/delete/<int:product_id>')
+@jwt_required()
 def product_delete(product_id):
     p = Product.query.get(product_id)
     if not p:

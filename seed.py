@@ -10,8 +10,8 @@ with app.app_context():
 
     # --- Seed Users ---
     users = [
-        User(username="admin", email="admin@gmail.com", password=generate_password_hash("admin123")),
-        User(username="staff", email="staff@gmail.com", password=generate_password_hash("staff123"))
+        User(username="admin", email="admin@gmail.com", password=generate_password_hash("admin123"), role="admin"),
+        User(username="staff", email="staff@gmail.com", password=generate_password_hash("staff123"), role="admin")
     ]
     db.session.add_all(users)
     db.session.flush()

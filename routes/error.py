@@ -1,9 +1,13 @@
 from app import app
 from flask import abort, render_template
 
+# @app.route("/forbidden")
+# def test_forbidden():
+#     abort(403)
+
 @app.route("/forbidden")
-def test_forbidden():
-    abort(403)
+def forbidden():
+    return render_template("error_page/403.html"), 403
 
 @app.route("/abort404")
 def abort404():
@@ -18,7 +22,7 @@ def test418():
 
 @app.route("/crash")
 def crash():
-    raise Exception("boom")  # JSON 500
+    abort(404)
 
 @app.errorhandler(403)
 def forbidden_error(e):

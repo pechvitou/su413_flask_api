@@ -1,8 +1,11 @@
+from flask_jwt_extended import jwt_required
+
 from app import app, db
 from model import Branch
 from flask import request, jsonify
 
 @app.get('/branch/list')
+@jwt_required()
 def branch_list():
     branches = Branch.query.all()
     result = [
@@ -12,6 +15,7 @@ def branch_list():
     return jsonify(result), 200
 
 @app.get('/branch/<int:branch_id>')
+@jwt_required()
 def branch_get(branch_id):
     b = Branch.query.get(branch_id)
     if not b:
@@ -25,6 +29,7 @@ def branch_get(branch_id):
     }), 200
 
 @app.post('/branch/create')
+@jwt_required()
 def branch_create():
     data = request.get_json()
     name = data.get('name')
@@ -57,6 +62,7 @@ def branch_create():
     }), 201
 
 @app.put('/branch/update/<int:branch_id>')
+@jwt_required()
 def branch_update(branch_id):
     b = Branch.query.get(branch_id)
     if not b:
@@ -82,6 +88,7 @@ def branch_update(branch_id):
     }), 200
 
 @app.delete('/branch/delete/<int:branch_id>')
+@jwt_required()
 def branch_delete(branch_id):
     b = Branch.query.get(branch_id)
     if not b:

@@ -1,14 +1,18 @@
+from flask_jwt_extended import jwt_required
+
 from app import app, db
 from model import Category
 from flask import request, jsonify
 
 @app.get('/category/list')
+@jwt_required()
 def category_list():
     categories = Category.query.all()
     result = [{"id": c.id, "name": c.name} for c in categories]
     return jsonify(result), 200
 
 @app.get('/category/<int:category_id>')
+@jwt_required()
 def category_get(category_id):
     c = Category.query.get(category_id)
     if not c:
@@ -16,6 +20,7 @@ def category_get(category_id):
     return jsonify({"id": c.id, "name": c.name}), 200
 
 @app.post('/category/create')
+@jwt_required()
 def category_create():
     data = request.get_json()
     name = data.get('name')
@@ -34,6 +39,7 @@ def category_create():
     }), 201
 
 @app.put('/category/update/<int:category_id>')
+@jwt_required()
 def category_update(category_id):
     c = Category.query.get(category_id)
     if not c:
@@ -50,6 +56,7 @@ def category_update(category_id):
     }), 200
 
 @app.delete('/category/delete/<int:category_id>')
+@jwt_required()
 def category_delete(category_id):
     c = Category.query.get(category_id)
     if not c:

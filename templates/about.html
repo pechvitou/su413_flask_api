@@ -1,0 +1,82 @@
+{% extends "template.html" %}
+
+{% block title %}Viti's Electronics - About{% endblock %}
+
+{% block rightHeader %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/about.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Hero/About Section -->
+    <section class="about">
+        <div class="gradient-bg">
+            <div class="container">
+                <h2>About Viti's Electronics</h2>
+                <p>Welcome! I’m Vitou, the founder of Viti's Electronics. My goal is to bring you the latest electronic
+                    devices with excellent quality and unbeatable service.</p>
+                <p>Whether it’s smartphones, laptops, or smart home gadgets, I personally ensure every product is tested
+                    and curated for your convenience.</p>
+
+                <div class="mission-cards">
+                    <div class="card">
+                        <h3>Top Electronics</h3>
+                        <p>Carefully selected products from trusted brands, ensuring quality and durability.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Fast Shipping</h3>
+                        <p>Receive your electronics quickly and safely, delivered straight to your door.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Customer Support</h3>
+                        <p>I’m personally here to answer questions and help you get the best experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Section -->
+    <section class="founder">
+        <div class="container">
+            <h2>Meet the Founder</h2>
+            <div class="founder-profile">
+                <img src="/static/profile/pixelated-icon.png" alt="Vitou">
+                <h3>Vitou</h3>
+                <p>Founder & Tech Enthusiast</p>
+                <p>I started Viti's Electronics to make shopping for gadgets easy and trustworthy. Every product in my
+                    store is carefully chosen to ensure you get the best tech at the best value.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="cta-container">
+            <h2>Ready to grab the latest gadgets?</h2>
+            <a href="{{ url_for('home') }}" class="cta-button">Shop Now</a>
+        </div>
+    </section>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        function updateCartCount() {
+            const carts = JSON.parse(localStorage.getItem('carts')) || [];
+            const totalCount = carts.length;
+            const countElement = document.getElementById('cart-count');
+            if (countElement) countElement.textContent = totalCount;
+        }
+
+        updateCartCount();
+        window.addEventListener('storage', updateCartCount);
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        }
+    </script>
+
+{% endblock %}

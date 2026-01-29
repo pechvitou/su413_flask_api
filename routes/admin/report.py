@@ -1,3 +1,5 @@
+from flask_jwt_extended import jwt_required
+
 from app import app, db
 from datetime import datetime, timedelta
 from sqlalchemy import extract
@@ -5,6 +7,7 @@ from flask import jsonify
 from model import Order, User
 
 @app.get('/report/daily')
+@jwt_required()
 def report_daily():
     today = datetime.now().date()
     orders = Order.query.filter(db.func.date(Order.date_time) == today).all()
@@ -12,6 +15,7 @@ def report_daily():
 
 
 @app.get('/report/weekly')
+@jwt_required()
 def report_weekly():
     today = datetime.now().date()
     start_of_week = today - timedelta(days=today.weekday())  # Monday
@@ -21,6 +25,7 @@ def report_weekly():
 
 
 @app.get('/report/monthly')
+@jwt_required()
 def report_monthly():
     now = datetime.now()
     orders = Order.query.filter(
@@ -31,6 +36,7 @@ def report_monthly():
 
 
 @app.get('/report/by/<int:user_id>')
+@jwt_required()
 def report_by_user_id(user_id):
     user = User.query.get(user_id)
     if not user:

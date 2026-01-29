@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign up</title>
+    <!-- Link to static CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/signup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+<div class="signup-main-container">
+    <div class="signup-container fade-drop-in delay-300">
+        <p class="absolute-logo-signup delay-500">Viti's Store</p>
+        <div class="signup-card fade-slide-up delay-500">
+            <h2>Sign up new account</h2>
+
+            <!-- Username -->
+            <form id="signupForm">
+                <!-- Username -->
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username">
+                </div>
+
+                <!-- Gmail -->
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your gmail">
+                </div>
+
+                <!-- Password -->
+                <div class="input-group password-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" placeholder="Enter your password">
+                    </div>
+                </div>
+
+                <button type="submit" class="signup-btn">Sign up</button>
+            </form>
+        </div>
+    </div>
+    <div class="context-container">
+        <div class="text-container fade-drop-in delay-200">
+            <div class="text">
+                <p class="text-s">Leading Electronics Store</p>
+                <h2>POWERED BY</h2>
+                <h2 id="yellow">INNOVATION</h2>
+                <h2>FOR EVERY HOME.</h2>
+            </div>
+            <div class="signup-navigator">
+                <p>Already have an account?</p>
+                <a href="login-page">Login</a>
+            </div>
+        </div>
+        <div class="context-image-container fade-slide-up delay-200">
+            <img width="500px" height="auto" src="static/stock_images/abstract landscape.jpg"/>
+            <p class="absolute-text">Hello! I’m Vitou, founder of Viti's Electronics, bringing you the best electronic
+                devices with top-notch quality and service.</p>
+            <p class="absolute-logo" onclick="window.location.href='/'">Viti's Store</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        // Basic frontend validation
+        if (!username || !email || !password) return;
+        if (username.length < 3 || username.length > 20) return;
+        if (!/^[A-Za-z0-9_.-]+$/.test(username)) return;
+        if (!email.toLowerCase().endsWith("@gmail.com")) return;
+        if (!/^[A-Za-z0-9._%+-]+@gmail\.com$/.test(email)) return;
+        if (password.length < 6) return;
+
+        try {
+            // Signup request
+            const signupRes = await fetch("/register", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({username, email, password})
+            });
+
+            const signupResult = await signupRes.json();
+
+            if (!signupRes.ok) {
+                return alert(signupResult.error || "Signup failed");
+            }
+
+            // Auto-login after successful signup
+            const loginRes = await fetch("/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({username, password})
+            });
+
+            const loginResult = await loginRes.json();
+
+            if (!loginRes.ok) {
+                return alert(loginResult.error || "Login failed after signup");
+            }
+
+            // Successful login → redirect
+            window.location.href = "/dashboard";
+
+        } catch (err) {
+            alert("Network error");
+            console.error(err);
+        }
+    });
+</script>
+</body>
+</html>

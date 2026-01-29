@@ -1,0 +1,284 @@
+/* --- Modern Electronics Product Page --- */
+
+/* Wrapper Centering */
+.product-detail-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100dvh - 70px);
+    padding: 20px;
+    background: #f5f6f8;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Inline Back Button inside product container */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    margin-bottom: 25px;
+    background: #f1f3f6;
+    color: #0071e3;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    background: #0071e3;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Product Card */
+.product-detail-container {
+    max-width: 1100px;
+    width: 100%;
+    display: flex;
+    gap: 60px;
+    background: #ffffff;
+    border-radius: 25px;
+    padding: 40px 50px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+}
+
+/* Product Image */
+.product-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.product-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 25px;
+    /*box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);*/
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.product-image img:hover {
+    transform: scale(1.05);
+    /*box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);*/
+}
+
+/* Product Info */
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.product-info h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.product-info .description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #3c3c3c;
+}
+
+.product-info .price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0071e3;
+}
+
+/* Product Features */
+.product-features h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.product-features ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.product-features ul li {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+    color: #555;
+}
+
+.product-features ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #0071e3;
+    font-weight: bold;
+}
+
+/* Quantity Selector */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.quantity-selector button {
+    width: 55px;
+    height: 55px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-radius: 15px;
+    border: none;
+    background: #f1f3f6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05), -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+
+.quantity-selector button:hover {
+    background: #e0e3e8;
+}
+
+.quantity-selector input {
+    width: 80px;
+    text-align: center;
+    font-size: 1.3rem;
+    border-radius: 12px;
+    border: 1px solid #d1d1d6;
+    padding: 8px;
+}
+
+.quantity-selector input::-webkit-outer-spin-button,
+.quantity-selector input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quantity-selector input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Add to Cart Button */
+.actions {
+    width: 100%;
+}
+
+.cart-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(90deg, #0071e3, #005bb5);
+    color: #fff;
+    font-weight: 700;
+    padding: 18px 0;
+    border-radius: 18px;
+    text-align: center;
+    font-size: 1.25rem;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.cart-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Toast */
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    max-width: 90%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    padding: 14px 24px;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%) translateY(20px);
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .product-detail-container {
+        flex-direction: column;
+        gap: 30px;
+        padding: 20px;
+    }
+
+    .product-image img {
+        max-width: 90%;
+        max-height: 400px;
+    }
+
+    .product-info h1 {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .product-info .description {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .product-info .price {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .quantity-selector {
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .quantity-selector button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .quantity-selector input {
+        width: 60px;
+        font-size: 1.1rem;
+    }
+
+    .cart-btn {
+        font-size: 1.1rem;
+        padding: 14px 0;
+        border-radius: 14px;
+    }
+
+    .back-btn {
+        top: 15px;
+        left: 15px;
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,42 @@
+{% extends "template.html" %}
+
+{% block title %}Viti's Electronics - Contact{% endblock %}
+
+{% block rightHeader %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/result.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="result-container">
+        <div class="result-card">
+            <h1 class="result-title">Thank You!</h1>
+            <p class="result-subtitle">Your message has been submitted successfully.</p>
+
+            <div class="result-info">
+                <div class="result-item">
+                    <h4>Full Name</h4>
+                    <p>{{ full_name }}</p>
+                </div>
+
+                <div class="result-item">
+                    <h4>Email</h4>
+                    <p>{{ email }}</p>
+                </div>
+
+                <div class="result-item">
+                    <h4>Phone</h4>
+                    <p>{{ phone }}</p>
+                </div>
+
+                <div class="result-item">
+                    <h4>Message</h4>
+                    <p>{{ message }}</p>
+                </div>
+            </div>
+
+            <a href="/contact" class="back-btn">Send Another Message</a>
+        </div>
+    </div>
+
+    {% include 'partials/footer.html' %}
+{% endblock %}

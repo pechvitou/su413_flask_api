@@ -1,0 +1,64 @@
+<div class="appbar">
+    <div class="navigation-container">
+        <h3 id="about-us">About us</h3>
+        <h3 id="contact">Contacts</h3>
+
+    </div>
+
+    <div class="logo-container">
+        <h1 class="logo" onclick="window.location.href='/'">
+            Viti's Shop<span>.</span>
+        </h1>
+    </div>
+
+    <div class="navigation-container">
+        {% if user and user.username %}
+            <h3 id="admin">Admin</h3>
+            <h3 id="dashboard">Dashboard</h3>
+            <h3 id="dashboard-mobile" class="dashboard-mobile">Dashboard</h3>
+        {% endif %}
+
+        {% if not user %}
+            <button class="sign-up-button" onclick="window.location.href='/signup'">Sign up</button>
+            <button class="login-button" onclick="window.location.href='/login-page'">Login</button>
+        {% endif %}
+
+        <button class="cart-button" onclick="window.location.href='/cart'">
+            <span id="cart-count">0</span>
+
+            {#            <svg width="30" height="30">#}
+            {#                <use href="/static/svg/sprite.svg#icon-cart-v2" ></use>#}
+            {#            </svg>#}
+
+            <img src="/static/svg/cart-24-regular.svg" width="30" height="30"/>
+        </button>
+        {% if user and user.username %}
+            <div class="profile-image">
+                <img src="{{ user.profile_image or url_for('static', filename='svg/user-profile-icon.svg') }}"
+                     alt="Profile Avatar" class="profile-avatar" id="profile-avatar">
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('about-us').addEventListener('click', () => {
+        window.location.href = '/about'; // Navigate to /about
+    });
+
+    document.getElementById('contact').addEventListener('click', () => {
+        window.location.href = '/contact'; // Navigate to /about
+    });
+
+    document.getElementById('dashboard').addEventListener('click', () => {
+        window.location.href = '/dashboard'; // Navigate to /about
+    });
+
+    document.getElementById('admin').addEventListener('click', () => {
+        window.location.href = '/admin'; // Navigate to /about
+    });
+
+    document.getElementById('dashboard-mobile').addEventListener('click', () => {
+        window.location.href = '/dashboard'; // Navigate to /about
+    });
+</script>

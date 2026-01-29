@@ -1,0 +1,306 @@
+@keyframes fadeInBottom {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+html, body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.appbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    color: black;
+    padding: 1rem 1.75rem;
+    box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e5e5e5;
+    height: 75px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 30
+}
+
+.appbar-logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.appbar-logo .logo {
+    font-weight: bold;
+    font-size: 2rem;
+    font-family: 'ROOSTER', Arial;
+    cursor: pointer;
+}
+
+.appbar .appbar-options {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.sign-out-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.sign-out-button:hover {
+    background: #f1f1f1;
+}
+
+.main-container-home {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    gap: 40px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 140px;
+    gap: 10px;
+}
+
+.profile-icon {
+    opacity: 0.5;
+}
+
+.profile-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-name h2 {
+    font-family: 'Roboto', Arial;
+    font-weight: 500;
+    font-size: clamp(1.5rem, 2.25vw, 2.5rem);
+    color: #00000099;
+    text-align: center;
+}
+
+.profile-name span {
+    color: #000000be;
+}
+
+.navigation-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 75px;
+    flex-wrap: wrap;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.navigation-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 125px;
+    height: 125px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.navigation-button::before {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    border-radius: inherit;
+    z-index: -1;
+    filter: blur(70px);
+    opacity: 0.8;
+    background: inherit;
+}
+
+.navigation-title {
+    font-family: 'Roboto', Arial;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #000000E6;
+}
+
+.navigation:nth-child(1) .navigation-button {
+    background: linear-gradient(135deg, #5b8dd9 0%, #7aa6e3 100%);
+    fill: white;
+}
+
+.navigation:nth-child(2) .navigation-button {
+    background: linear-gradient(135deg, #ff95a0 0%, #ffab85 100%);
+    stroke: white;
+}
+
+.navigation:nth-child(3) .navigation-button {
+    background: linear-gradient(135deg, #6dd5ed 0%, #45e7a5 100%);
+    fill: white;
+}
+
+.navigation:nth-child(4) .navigation-button {
+    background: linear-gradient(135deg, #f9b233 0%, #ffe07a 100%);
+    stroke: white;
+}
+
+.navigation:nth-child(5) .navigation-button {
+    background: linear-gradient(135deg, #a583d7 0%, #7fa7f2 100%);
+    stroke: white;
+}
+
+@keyframes fadeDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInBottomLogout {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+
+@media (max-width: 500px) {
+    app-logout {
+        width: calc(100% - 40px);
+        position: fixed;
+        left: 50%;
+        /* remove transformX here, animation handles it */
+        animation: fadeInBottomLogout 0.3s ease forwards;
+    }
+
+    .profile-container {
+        margin-top: 85px;
+    }
+
+    .navigation-container {
+        gap: 50px;
+        margin-bottom: 20px;
+    }
+
+    .backdrop {
+        display: none;
+    }
+
+    .appbar-container {
+        padding: 15px 20px;
+    }
+
+    .appbar-logo {
+        font-size: 1.2rem;
+    }
+
+    .version {
+        font-size: 10px;
+    }
+
+    .setting-icon {
+        height: 40px;
+        width: 40px;
+    }
+
+    .setting-icon img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 430px) {
+    .main-container-home {
+        padding: 0;
+    }
+
+    .appbar {
+        height: 65px;
+    }
+
+    .appbar .logo {
+        font-size: 1.25rem;
+    }
+
+    .profile-icon svg {
+        height: 170px;
+        width: 170px;
+    }
+
+    .navigation-button {
+        width: 130px;
+        height: 130px;
+    }
+
+    .navigation-button svg {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 393px) {
+    .appbar {
+        height: 60px;
+    }
+
+    .appbar .logo {
+        font-size: 1.1rem;
+    }
+
+    .profile-icon svg {
+        height: 160px;
+        width: 160px;
+    }
+}

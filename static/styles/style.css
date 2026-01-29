@@ -1,0 +1,90 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto';
+}
+
+@font-face {
+    font-family: 'Cutoff Pro';
+    src: url('../fonts/Cutoff Pro.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Strafon';
+    src: url('../fonts/Strafon-Demo.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Halloween Weekend';
+    src: url('../fonts/Halloween Weekend.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SF-Mono-B';
+    src: url('../fonts/SF-Mono-Bold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'SF-Mono-R';
+    src: url('../fonts/SF-Mono-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'ROOSTER';
+    src: url('../fonts/ROOSTER PERSONAL USE.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/OpenSans.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Kantumruy';
+    src: url('../fonts/Kantumruy.ttf') format('truetype');
+}
+
+/*Keyframe*/
+.fade-drop-in {
+    animation: fade-drop-in 0.6s ease-out forwards;
+}
+
+.fade-slide-up {
+    animation: fade-slide-up 0.6s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-1000 { animation-delay: 1s; }
+
+@keyframes fade-drop-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

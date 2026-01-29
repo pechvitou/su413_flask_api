@@ -1,0 +1,229 @@
+.appbar {
+    background-color: white;
+    /*box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);*/
+    padding: 12px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: 70px;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+}
+
+.logo-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.logo {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: black;
+    letter-spacing: -0.015em;
+    cursor: pointer;
+    font-family: 'ROOSTER', Arial;
+}
+
+.logo span {
+    color: orangered;
+}
+
+.navigation-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.navigation-container h3 {
+    font-size: 1rem;
+    color: #333333;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navigation-container h3::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px;
+    width: 0;
+    height: 2px; /* thickness of underline */
+    background-color: #000000E6;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navigation-container h3:hover {
+    color: #000000E6;
+}
+
+.navigation-container h3:hover::after {
+    width: 100%; /* full underline width on hover */
+}
+
+.cart-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.84);
+    border: none;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    filL: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.cart-button svg {
+    fill: white;
+}
+
+.cart-button:hover {
+    background: #000000;
+    fill: white;
+}
+
+.cart-button span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: orangered;
+    position: absolute;
+    top: -2px;
+    right: -8px;
+}
+
+.sign-up-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000E6;
+    border: 2px solid transparent;
+    padding: 12px 20px;
+    border-radius: 0;
+    color: white;
+    width: 90px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.sign-up-button:hover {
+    background: rgba(0, 0, 0, 0.82);
+}
+
+.login-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 0;
+    border: 2px solid #000000E6;
+    color: #000000E6;
+    width: 90px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background: #000000E6;
+    color: white;
+}
+
+.dashboard-mobile {
+    display: none;
+}
+
+.profile-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.profile-image img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Mobile layout */
+@media (max-width: 650px) {
+    /* Hide nav text */
+    .navigation-container h3 {
+        display: none;
+    }
+
+    /* Appbar flex layout */
+    .appbar {
+        display: flex;
+        justify-content: space-between; /* logo left, nav right */
+        align-items: center;
+        padding: 0 20px;
+    }
+
+    /* Logo left */
+    .logo-container {
+            left: 20%;
+        flex: 1;
+        text-align: left;
+    }
+
+    .logo {
+        font-size: 1.75rem;
+    }
+
+    .navigation-container h3#admin {
+        display: block !important;
+    }
+
+    .dashboard-mobile {
+        display: block !important;
+    }
+
+    /* Right nav container (cart) */
+    .navigation-container:last-child {
+        flex: 0; /* only takes as much space as needed */
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .sign-up-button,
+    .login-button {
+        width: 85px;
+        font-size: 0.75rem;
+        padding: 12px 16px;
+    }
+}
+
+
+@media (max-width: 375px) {
+    .logo {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 344px) {
+    .logo {
+        font-size: 1rem;
+    }
+}
